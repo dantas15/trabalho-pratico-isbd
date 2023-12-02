@@ -6,19 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trabalho prático ISBD</title>
 
-  <link rel='stylesheet' type='text/css' media='screen' href='estilos.css'>
+  <link rel="stylesheet" type="text/css" media='screen' href="/estilos.css">
 
 </head>
 
 <body>
-  <nav>
-    <div>
-      <button type="button" data-bs-toggle="collapse" data-bs-target="#navbar-links" aria-controls="navbar-links" aria-expanded="false" aria-label="Alternar navegação">
-        <span class="navbar-icon"></span>
-      </button>
-      <div class="collapse" id="navbar-links">
+  <nav class="navbar">
+    <div class="navbar-wrapper">
+      <span class="navbar-logo">Gestão de vendas</span>
+      <div class="navbar-links">
         <div class="navbar-nav">
-          <a class="nav-link <?= $url == '/' ? 'active' : '' ?>" aria-current="page" href="/">Inicial</a>
+          <a class="nav-link <?= $url[0] == '/' ? 'ativo' : '' ?>" aria-current="page" href="/">Inicial</a>
+          <a class="nav-link <?= $url[0] == '/teste' ? 'ativo' : '' ?>" aria-current="page" href="/teste">Teste</a>
         </div>
       </div>
     </div>
