@@ -1,0 +1,9 @@
+# Isso redireciona todas as rotas do servidor apache para o index.php
+# Fizemos isso porque estávamos tendo problema com o apache não encontrando as rotas
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
