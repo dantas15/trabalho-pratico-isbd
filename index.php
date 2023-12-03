@@ -16,6 +16,9 @@ switch ($url[0]) {
   case '/':
     inicial();
     break;
+  case '/fornecedor':
+    fornecedor();
+    break;
   default:
     notfound();
     break;

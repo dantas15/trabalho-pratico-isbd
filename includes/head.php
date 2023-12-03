@@ -17,7 +17,7 @@
       <div class="navbar-links">
         <div class="navbar-nav">
           <a class="nav-link <?= $url[0] == '/' ? 'ativo' : '' ?>" aria-current="page" href="/">Inicial</a>
-          <a class="nav-link <?= $url[0] == '/teste' ? 'ativo' : '' ?>" aria-current="page" href="/teste">Teste</a>
+          <a class="nav-link <?= is_numeric(strpos($url[0], '/fornecedor')) ? 'ativo' : '' ?>" aria-current="page" href="/fornecedor">Fornecedor</a>
         </div>
       </div>
     </div>

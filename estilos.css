@@ -104,8 +104,13 @@ img {
   gap: 20px;
 }
 
-.ativo {
+.nav-link {
   color: var(--cinza-300);
+  font-weight: bold;
+}
+
+.ativo {
+  color: var(--cinza-200);
   text-decoration: underline;
 }
 
