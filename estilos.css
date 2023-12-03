@@ -14,6 +14,7 @@ html {
 body {
   font-family: Arial, sans-serif;
   line-height: 1.5;
+  min-height: 100vh;
 }
 
 h1,
@@ -73,7 +74,9 @@ img {
 .navbar-wrapper {
   padding-left: 20px;
   padding-right: 20px;
+  width: 100%;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
 }
 
@@ -92,10 +95,50 @@ img {
 .navbar-nav {
   display: flex;
   gap: 20px;
-  list-style: none;
 }
 
 .ativo {
-  color: #dfdfdf;
+  color: var(--cinza-300);
   text-decoration: underline;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.conteudo-principal {
+  width: 1200px;
+  padding: 20px;
+  border: 1px solid var(--cinza-100);
+  border-top: 0;
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 1200px) {
+  .navbar-wrapper {
+    flex-direction: column;
+  }
+  .navbar-logo {
+    display: flex;
+    justify-content: center;
+  }
+  .navbar-links {
+    justify-content: center;
+  }
+
+  .navbar-nav {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .container {
+    flex-direction: row;
+  }
+
+  .conteudo-principal {
+    width: 100%;
+  }
 }
