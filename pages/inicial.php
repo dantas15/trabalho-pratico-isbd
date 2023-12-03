@@ -27,8 +27,8 @@
     </div>
     <div class="gerenciar">
       <h3>Fornecedores</h3>
-      <a href="/" class="gerenciar-botao">Listar fornecedores</a>
-      <a href="/" class="gerenciar-botao adicionar">Adicionar fornecedor</a>
+      <a href="/fornecedor" class="gerenciar-botao">Listar fornecedores</a>
+      <a href="/fornecedor/criar" class="gerenciar-botao adicionar">Adicionar fornecedor</a>
     </div>
     <div class="gerenciar">
       <h3>Colaboradores</h3>

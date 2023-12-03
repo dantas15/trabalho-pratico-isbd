@@ -204,3 +204,31 @@ img {
   font-weight: bold;
   margin-right: 5px;
 }
+
+.tabela {
+  margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  padding: 20px;
+  border: 1px solid var(--cinza-100);
+  border-radius: 5px;
+}
+
+.tabela th,
+.tabela td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--cinza-200);
+}
+
+.tabela th {
+  background-color: var(--cinza-100);
+}
+
+.tabela tbody tr:nth-child(even) {
+  background-color: var(--cinza-200);
+}
+
+.tabela tbody tr td:nth-last-child() {
+  margin-right: 4px;
+}
