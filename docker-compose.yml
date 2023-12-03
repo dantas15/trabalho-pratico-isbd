@@ -3,6 +3,8 @@ version: '3'
 services:
   web:
     build: .
+    links:
+      - db:db
     ports:
       - '8000:80'
     volumes:
