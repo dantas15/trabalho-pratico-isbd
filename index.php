@@ -24,6 +24,18 @@ switch ($url[0]) {
   case '/fornecedor/deletar':
     deletarFornecedor();
     break;
+  case '/categoria':
+    categoria();
+    break;
+  case '/categoria/criar':
+    criarCategoria();
+    break;
+  case '/categoria/editar':
+    editarCategoria();
+    break;
+  case '/categoria/deletar':
+    deletarCategoria();
+    break;
   default:
     notfound();
     break;

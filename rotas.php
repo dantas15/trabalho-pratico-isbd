@@ -163,6 +163,126 @@ function deletarFornecedor()
 }
 
 /*
+  ********** CATEGORIAS **********
+*/
+
+/*
+  Listar categorias (Listar e Deletar)
+*/
+function categoria()
+{
+  include __DIR__ . '/pages/categoria.php';
+}
+
+/*
+  Criar categoria
+*/
+function criarCategoria()
+{
+  $dados = [];
+
+  if ($_POST) {
+    $con = conectarDb();
+
+    // Validar os dados do formulário
+    $nomeCat = $_POST['nomeCat'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($nomeCat)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sql = "INSERT INTO Categoria (nomeCat) VALUES ('$nomeCat')";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+        exibirMensagem("Cadastro realizado com sucesso!");
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao cadastrar categoria. Por favor, tente novamente. $mensagemDeErro");
+      }
+    }
+    mysqli_close($con);
+  }
+
+  include __DIR__ . '/pages/criarCategoria.php';
+}
+
+/*
+  Editar categoria
+*/
+function editarCategoria()
+{
+  $idEditar = isset($_GET['id']) ? $_GET['id'] : null;
+  $con = conectarDb();
+
+  $dados = false;
+
+  if ($_POST) {
+    // Validar os dados do formulário
+    $nomeCat = $_POST['nomeCat'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($nomeCat)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sql = "UPDATE Categoria SET nomeCat='$nomeCat' WHERE idCategoria='$idEditar'";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+        exibirMensagem("Categoria atualizada com sucesso!");
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao atualizar categoria. Por favor, tente novamente. $mensagemDeErro");
+      }
+
+      // Coloque os valores do post em $dados para que o formulário não fique vazio
+      $dados['nomeCat'] = $nomeCat;
+    }
+  } else {
+    $sql = "SELECT * FROM Categoria WHERE idCategoria='$idEditar'";
+    $result = mysqli_query($con, $sql);
+    $dados = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  }
+
+  mysqli_close($con);
+
+  if (!$dados) {
+    exibirMensagem("Categoria não encontrada.");
+    include __DIR__ . '/pages/404.php';
+    return;
+  }
+
+  include __DIR__ . '/pages/editarCategoria.php';
+}
+
+/*
+  Deletar categoria
+*/
+function deletarCategoria()
+{
+  $idDeletar = isset($_GET['id']) ? $_GET['id'] : null;
+
+  $con = conectarDb();
+
+  $sql = "DELETE FROM Categoria WHERE idCategoria='$idDeletar'";
+  $result = mysqli_query($con, $sql);
+
+  if ($result) {
+    exibirMensagem("Categoria deletada com sucesso!");
+  } else {
+    $mensagemDeErro = mysqli_error($con);
+    exibirMensagem("Erro ao deletar categoria. Por favor, tente novamente. $mensagemDeErro");
+  }
+
+  mysqli_close($con);
+
+  include __DIR__ . '/pages/categoria.php';
+}
+
+
+/*
   Páginas de erro
 */
 function notfound()
