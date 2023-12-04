@@ -18,6 +18,9 @@ switch ($url[0]) {
   case '/fornecedor/criar':
     criarFornecedor();
     break;
+  case '/fornecedor/editar':
+    editarFornecedor();
+    break;
   default:
     notfound();
     break;

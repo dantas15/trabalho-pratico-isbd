@@ -75,6 +75,71 @@ function criarFornecedor()
 }
 
 /*
+  Editar fornecedor
+*/
+function editarFornecedor()
+{
+  $idEditar = isset($_GET['id']) ? $_GET['id'] : null;
+  $con = conectarDb();
+
+  $dados = false;
+
+  if ($_POST) {
+    // Validar os dados do formulário
+    $nomeForn = $_POST['nomeForn'];
+    $numTelefone = $_POST['numTelefone'];
+    $logradouro = $_POST['logradouro'];
+    $cidade = $_POST['cidade'];
+    $complemento = $_POST['complemento'];
+    $numero = $_POST['numero'];
+    $bairro = $_POST['bairro'];
+    $cep = $_POST['cep'];
+    $estado = $_POST['estado'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($nomeForn) || empty($numTelefone) || empty($logradouro) || empty($cidade) || empty($numero) || empty($bairro) || empty($cep) || empty($estado)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sql = "UPDATE Fornecedor SET nomeForn='$nomeForn', numTelefone='$numTelefone', logradouro='$logradouro', cidade='$cidade', complemento='$complemento', numero='$numero', bairro='$bairro', cep='$cep', estado='$estado' WHERE idFornecedor='$idEditar'";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+        exibirMensagem("Fornecedor atualizado com sucesso!");
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao atualizar fornecedor. Por favor, tente novamente. $mensagemDeErro");
+      }
+
+      // Coloque os valores do post em $dados para que o formulário não fique vazio
+      $dados['nomeForn'] = $nomeForn;
+      $dados['numTelefone'] = $numTelefone;
+      $dados['logradouro'] = $logradouro;
+      $dados['cidade'] = $cidade;
+      $dados['complemento'] = $complemento;
+      $dados['numero'] = $numero;
+      $dados['bairro'] = $bairro;
+      $dados['cep'] = $cep;
+      $dados['estado'] = $estado;
+    }
+  } else {
+    $sql = "SELECT * FROM Fornecedor WHERE idFornecedor='$idEditar'";
+    $result = mysqli_query($con, $sql);
+    $dados = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  }
+
+  mysqli_close($con);
+
+  if (!$dados) {
+    exibirMensagem("Fornecedor não encontrado.");
+    include __DIR__ . '/pages/404.php';
+    return;
+  }
+
+  include __DIR__ . '/pages/editarFornecedor.php';
+}
+
+/*
   Páginas de erro
 */
 function notfound()
