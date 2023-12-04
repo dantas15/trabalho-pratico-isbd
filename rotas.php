@@ -404,6 +404,153 @@ function deletarColaborador()
 }
 
 /*
+  ********** CLIENTES **********
+*/
+
+/*
+  Listar clientes (Listar e Deletar)
+*/
+function cliente()
+{
+  include __DIR__ . '/pages/cliente.php';
+}
+
+/*
+  Criar cliente
+*/
+function criarCliente()
+{
+  $dados = [];
+
+  if ($_POST) {
+    $con = conectarDb();
+
+    // Validar os dados do formulário
+    $cpf = $_POST['cpf'];
+    $nomeCliente = $_POST['nomeCliente'];
+    $numTelefone = $_POST['numTelefone'];
+    $logradouro = $_POST['logradouro'];
+    $cidade = $_POST['cidade'];
+    $complemento = $_POST['complemento'];
+    $numero = $_POST['numero'];
+    $bairro = $_POST['bairro'];
+    $cep = $_POST['cep'];
+    $estado = $_POST['estado'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($cpf) || empty($nomeCliente) || empty($numTelefone) || empty($logradouro) || empty($cidade) || empty($numero) || empty($bairro) || empty($cep) || empty($estado)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sql = "INSERT INTO Cliente (cpf, nomeCliente, numTelefone, logradouro, cidade, complemento, numero, bairro, cep, estado) VALUES ('$cpf', '$nomeCliente', '$numTelefone', '$logradouro', '$cidade', '$complemento', '$numero', '$bairro', '$cep', '$estado')";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+        exibirMensagem("Cadastro realizado com sucesso!");
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao cadastrar cliente. Por favor, tente novamente. $mensagemDeErro");
+      }
+    }
+    mysqli_close($con);
+  }
+
+  include __DIR__ . '/pages/criarCliente.php';
+}
+
+/*
+  Editar cliente
+*/
+function editarCliente()
+{
+  $idEditar = isset($_GET['id']) ? $_GET['id'] : null;
+  $con = conectarDb();
+
+  $dados = false;
+
+  if ($_POST) {
+    // Validar os dados do formulário
+    $cpf = $_POST['cpf'];
+    $nomeCliente = $_POST['nomeCliente'];
+    $numTelefone = $_POST['numTelefone'];
+    $logradouro = $_POST['logradouro'];
+    $cidade = $_POST['cidade'];
+    $complemento = $_POST['complemento'];
+    $numero = $_POST['numero'];
+    $bairro = $_POST['bairro'];
+    $cep = $_POST['cep'];
+    $estado = $_POST['estado'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($cpf) || empty($nomeCliente) || empty($numTelefone) || empty($logradouro) || empty($cidade) || empty($numero) || empty($bairro) || empty($cep) || empty($estado)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sql = "UPDATE Cliente SET cpf='$cpf', nomeCliente='$nomeCliente', numTelefone='$numTelefone', logradouro='$logradouro', cidade='$cidade', complemento='$complemento', numero='$numero', bairro='$bairro', cep='$cep', estado='$estado' WHERE idCliente='$idEditar'";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+        exibirMensagem("Cliente atualizado com sucesso!");
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao atualizar cliente. Por favor, tente novamente. $mensagemDeErro");
+      }
+
+      // Coloque os valores do post em $dados para que o formulário não fique vazio
+      $dados['cpf'] = $cpf;
+      $dados['nomeCliente'] = $nomeCliente;
+      $dados['numTelefone'] = $numTelefone;
+      $dados['logradouro'] = $logradouro;
+      $dados['cidade'] = $cidade;
+      $dados['complemento'] = $complemento;
+      $dados['numero'] = $numero;
+      $dados['bairro'] = $bairro;
+      $dados['cep'] = $cep;
+      $dados['estado'] = $estado;
+    }
+  } else {
+    $sql = "SELECT * FROM Cliente WHERE idCliente='$idEditar'";
+    $result = mysqli_query($con, $sql);
+    $dados = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  }
+
+  mysqli_close($con);
+
+  if (!$dados) {
+    exibirMensagem("Cliente não encontrado.");
+    include __DIR__ . '/pages/404.php';
+    return;
+  }
+
+  include __DIR__ . '/pages/editarCliente.php';
+}
+
+/*
+  Deletar cliente
+*/
+function deletarCliente()
+{
+  $idDeletar = isset($_GET['id']) ? $_GET['id'] : null;
+
+  $con = conectarDb();
+
+  $sql = "DELETE FROM Cliente WHERE idCliente='$idDeletar'";
+  $result = mysqli_query($con, $sql);
+
+  if ($result) {
+    exibirMensagem("Cliente deletado com sucesso!");
+  } else {
+    $mensagemDeErro = mysqli_error($con);
+    exibirMensagem("Erro ao deletar cliente. Por favor, tente novamente. $mensagemDeErro");
+  }
+
+  mysqli_close($con);
+
+  include __DIR__ . '/pages/cliente.php';
+}
+
+
+/*
   Páginas de erro
 */
 function notfound()
