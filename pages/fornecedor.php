@@ -25,6 +25,7 @@
   </thead>
   <tbody>
     <?php
+    $con = conectarDb();
     $sql = "SELECT * FROM Fornecedor";
     $result = mysqli_query($con, $sql);
 

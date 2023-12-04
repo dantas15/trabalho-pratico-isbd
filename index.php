@@ -21,6 +21,9 @@ switch ($url[0]) {
   case '/fornecedor/editar':
     editarFornecedor();
     break;
+  case '/fornecedor/deletar':
+    deletarFornecedor();
+    break;
   default:
     notfound();
     break;

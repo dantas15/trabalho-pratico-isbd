@@ -28,7 +28,6 @@ function inicial()
 */
 function fornecedor()
 {
-  $con = conectarDb();
   include __DIR__ . '/pages/fornecedor.php';
 }
 
@@ -137,6 +136,30 @@ function editarFornecedor()
   }
 
   include __DIR__ . '/pages/editarFornecedor.php';
+}
+
+/*
+  Deletar fornecedor
+*/
+function deletarFornecedor()
+{
+  $idDeletar = isset($_GET['id']) ? $_GET['id'] : null;
+
+  $con = conectarDb();
+
+  $sql = "DELETE FROM Fornecedor WHERE idFornecedor='$idDeletar'";
+  $result = mysqli_query($con, $sql);
+
+  if ($result) {
+    exibirMensagem("Fornecedor deletado com sucesso!");
+  } else {
+    $mensagemDeErro = mysqli_error($con);
+    exibirMensagem("Erro ao deletar fornecedor. Por favor, tente novamente. $mensagemDeErro");
+  }
+
+  mysqli_close($con);
+
+  include __DIR__ . '/pages/fornecedor.php';
 }
 
 /*
