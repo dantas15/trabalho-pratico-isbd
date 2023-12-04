@@ -205,6 +205,7 @@ img {
   margin-right: 5px;
 }
 
+/* Estilos de tabela (visualização) */
 .tabela {
   margin-top: 20px;
   width: 100%;
@@ -231,4 +232,36 @@ img {
 
 .tabela tbody tr td:nth-last-child() {
   margin-right: 4px;
+}
+
+/* Estilos do form */
+form {
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--cinza-200);
+  border-radius: 5px;
+  margin-bottom: 16px;
+}
+
+input[type='submit'] {
+  background-color: var(--azul-700);
+  color: #fff;
+  border: 0;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+input[type='submit']:hover {
+  background-color: var(--azul-800);
 }
