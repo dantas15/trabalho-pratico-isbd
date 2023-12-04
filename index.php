@@ -48,6 +48,18 @@ switch ($url[0]) {
   case '/colaborador/deletar':
     deletarColaborador();
     break;
+  case '/produto':
+    produto();
+    break;
+  case '/produto/criar':
+    criarProduto();
+    break;
+  case '/produto/editar':
+    editarProduto();
+    break;
+  case '/produto/deletar':
+    deletarProduto();
+    break;
   case '/cliente':
     cliente();
     break;

@@ -549,6 +549,174 @@ function deletarCliente()
   include __DIR__ . '/pages/cliente.php';
 }
 
+/*
+  ********** PRODUTOS **********
+*/
+
+/*
+  Listar produtos (Listar e Deletar)
+*/
+function produto()
+{
+  include __DIR__ . '/pages/produto.php';
+}
+
+/*
+  Criar produto
+*/
+function criarProduto()
+{
+  $dados = [];
+
+  if ($_POST) {
+    $con = conectarDb();
+
+    // Validar os dados do formulário
+    $nomeProd = $_POST['nomeProd'];
+    $descricao = $_POST['descricao'];
+    $preco = $_POST['preco'];
+    $quantEstoque = $_POST['quantEstoque'];
+    $idCategoria = $_POST['idCategoria'];
+    $idFornecedor = $_POST['idFornecedor'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($nomeProd) || empty($descricao) || empty($preco) || empty($quantEstoque) || empty($idCategoria) || empty($idFornecedor)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sqlProduto = "INSERT INTO Produto (nomeProd, descricao, preco, quantEstoque, idCategoria) 
+                     VALUES ('$nomeProd', '$descricao', $preco, $quantEstoque, $idCategoria)";
+      $resultProduto = mysqli_query($con, $sqlProduto);
+
+      if ($resultProduto) {
+        $idProduto = mysqli_insert_id($con);
+
+        // Relacionar produto com fornecedor
+        $sqlFornece = "INSERT INTO Fornece (idFornecedor, idProduto) VALUES ($idFornecedor, $idProduto)";
+        $resultFornece = mysqli_query($con, $sqlFornece);
+
+        if ($resultFornece) {
+          exibirMensagem("Cadastro realizado com sucesso!");
+        } else {
+          $mensagemDeErro = mysqli_error($con);
+          exibirMensagem("Erro ao relacionar produto com fornecedor. $mensagemDeErro");
+        }
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao cadastrar produto. Por favor, tente novamente. $mensagemDeErro");
+      }
+    }
+    mysqli_close($con);
+  }
+
+  // Dados do dropdown
+  $con = conectarDb();
+  $sqlCategorias = "SELECT * FROM Categoria";
+  $resultCategorias = mysqli_query($con, $sqlCategorias);
+  mysqli_close($con);
+
+  include __DIR__ . '/pages/criarProduto.php';
+}
+
+/*
+  Editar produto
+*/
+function editarProduto()
+{
+  $idEditar = isset($_GET['id']) ? $_GET['id'] : null;
+  $con = conectarDb();
+
+  $dados = false;
+
+  if ($_POST) {
+    // Validar os dados do formulário
+    $nomeProd = $_POST['nomeProd'];
+    $descricao = $_POST['descricao'];
+    $preco = $_POST['preco'];
+    $quantEstoque = $_POST['quantEstoque'];
+    $idCategoria = $_POST['idCategoria'];
+    $idFornecedor = $_POST['idFornecedor'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($nomeProd) || empty($descricao) || empty($preco) || empty($quantEstoque) || empty($idCategoria) || empty($idFornecedor)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sqlProduto = "UPDATE Produto 
+                     SET nomeProd='$nomeProd', descricao='$descricao', preco=$preco, quantEstoque=$quantEstoque, idCategoria=$idCategoria 
+                     WHERE idProduto='$idEditar'";
+      $resultProduto = mysqli_query($con, $sqlProduto);
+
+      if ($resultProduto) {
+        // Atualizar a relação com o fornecedor na tabela Fornece
+        $sqlFornece = "UPDATE Fornece SET idFornecedor=$idFornecedor WHERE idProduto=$idEditar";
+        $resultFornece = mysqli_query($con, $sqlFornece);
+
+        if ($resultFornece) {
+          exibirMensagem("Produto atualizado com sucesso!");
+        } else {
+          $mensagemDeErro = mysqli_error($con);
+          exibirMensagem("Erro ao atualizar relação com fornecedor. $mensagemDeErro");
+        }
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao atualizar produto. Por favor, tente novamente. $mensagemDeErro");
+      }
+
+      // Coloque os valores do post em $dados para que o formulário não fique vazio
+      $dados['nomeProd'] = $nomeProd;
+      $dados['descricao'] = $descricao;
+      $dados['preco'] = $preco;
+      $dados['quantEstoque'] = $quantEstoque;
+      $dados['idCategoria'] = $idCategoria;
+    }
+  } else {
+    $sql = "SELECT Produto.*, Fornece.idFornecedor 
+            FROM Produto 
+            LEFT JOIN Fornece ON Produto.idProduto = Fornece.idProduto
+            WHERE Produto.idProduto='$idEditar'";
+    $result = mysqli_query($con, $sql);
+    $dados = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  }
+
+  // Dados do dropdown
+  $sqlCategorias = "SELECT * FROM Categoria";
+  $resultCategorias = mysqli_query($con, $sqlCategorias);
+  mysqli_close($con);
+
+  if (!$dados) {
+    exibirMensagem("Produto não encontrado.");
+    include __DIR__ . '/pages/404.php';
+    return;
+  }
+
+  include __DIR__ . '/pages/editarProduto.php';
+}
+
+/*
+  Deletar produto
+*/
+function deletarProduto()
+{
+  $idDeletar = isset($_GET['id']) ? $_GET['id'] : null;
+
+  $con = conectarDb();
+
+  $sql = "DELETE FROM Produto WHERE idProduto='$idDeletar'";
+  $result = mysqli_query($con, $sql);
+
+  if ($result) {
+    exibirMensagem("Produto deletado com sucesso!");
+  } else {
+    $mensagemDeErro = mysqli_error($con);
+    exibirMensagem("Erro ao deletar produto. Por favor, tente novamente. $mensagemDeErro");
+  }
+
+  mysqli_close($con);
+
+  include __DIR__ . '/pages/produto.php';
+}
+
 
 /*
   Páginas de erro
