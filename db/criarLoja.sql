@@ -82,8 +82,8 @@ CREATE TABLE IF NOT EXISTS `loja`.`Categoria` (
 CREATE TABLE IF NOT EXISTS `loja`.`Produto` (
     `idProduto` INT NOT NULL AUTO_INCREMENT,
     `nomeProd` VARCHAR(80) NOT NULL,
-    `descrição` VARCHAR(255) NOT NULL,
-    `preço` REAL(8,2) NOT NULL,
+    `descricao` VARCHAR(255) NOT NULL,
+    `preco` REAL(8,2) NOT NULL,
     `quantEstoque` INT(6) NOT NULL,
     `idCategoria` INT NOT NULL,
     PRIMARY KEY (`idProduto`),
