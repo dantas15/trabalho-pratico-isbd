@@ -14,6 +14,7 @@
       <th>Nome</th>
       <th>Telefone</th>
       <th>Endereço</th>
+      <th>Cidade</th>
       <th>Complemento</th>
       <th>Número</th>
       <th>Bairro</th>
@@ -28,13 +29,14 @@
     $result = mysqli_query($con, $sql);
 
     if (mysqli_num_rows($result) == 0) {
-      echo "<tr><td colspan='9'><center>Nenhum fornecedor encontrado.</center></td></tr>";
+      echo "<tr><td colspan='10'><center>Nenhum fornecedor encontrado.</center></td></tr>";
     } else {
       while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>";
         echo "<td>" . $row['nomeForn'] . "</td>";
         echo "<td>" . $row['numTelefone'] . "</td>";
         echo "<td>" . $row['logradouro'] . "</td>";
+        echo "<td>" . $row['cidade'] . "</td>";
         echo "<td>" . $row['complemento'] . "</td>";
         echo "<td>" . $row['numero'] . "</td>";
         echo "<td>" . $row['bairro'] . "</td>";
