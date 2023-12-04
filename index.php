@@ -36,6 +36,18 @@ switch ($url[0]) {
   case '/categoria/deletar':
     deletarCategoria();
     break;
+  case '/colaborador':
+    colaborador();
+    break;
+  case '/colaborador/criar':
+    criarColaborador();
+    break;
+  case '/colaborador/editar':
+    editarColaborador();
+    break;
+  case '/colaborador/deletar':
+    deletarColaborador();
+    break;
   default:
     notfound();
     break;

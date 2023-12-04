@@ -281,6 +281,127 @@ function deletarCategoria()
   include __DIR__ . '/pages/categoria.php';
 }
 
+/*
+  ********** COLABORADORES **********
+*/
+
+/*
+  Listar colaboradores (Listar e Deletar)
+*/
+function colaborador()
+{
+  include __DIR__ . '/pages/colaborador.php';
+}
+
+/*
+  Criar colaborador
+*/
+function criarColaborador()
+{
+  $dados = [];
+
+  if ($_POST) {
+    $con = conectarDb();
+
+    // Validar os dados do formulário
+    $cargo = $_POST['cargo'];
+    $dataContratacao = $_POST['dataContratacao'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($cargo) || empty($dataContratacao)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sql = "INSERT INTO Colaborador (cargo, dataContratacao) VALUES ('$cargo', '$dataContratacao')";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+        exibirMensagem("Cadastro realizado com sucesso!");
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao cadastrar colaborador. Por favor, tente novamente. $mensagemDeErro");
+      }
+    }
+    mysqli_close($con);
+  }
+
+  include __DIR__ . '/pages/criarColaborador.php';
+}
+
+/*
+  Editar colaborador
+*/
+function editarColaborador()
+{
+  $idEditar = isset($_GET['id']) ? $_GET['id'] : null;
+  $con = conectarDb();
+
+  $dados = false;
+
+  if ($_POST) {
+    // Validar os dados do formulário
+    $cargo = $_POST['cargo'];
+    $dataContratacao = $_POST['dataContratacao'];
+
+    // Realizar a validação dos campos obrigatórios
+    if (empty($cargo) || empty($dataContratacao)) {
+      exibirMensagem("Por favor, preencha todos os campos obrigatórios.");
+    } else {
+      // Realizar a atualização dos dados no banco de dados
+      $sql = "UPDATE Colaborador SET cargo='$cargo', dataContratacao='$dataContratacao' WHERE idColaborador='$idEditar'";
+      $result = mysqli_query($con, $sql);
+
+      if ($result) {
+        exibirMensagem("Colaborador atualizado com sucesso!");
+      } else {
+        $mensagemDeErro = mysqli_error($con);
+        exibirMensagem("Erro ao atualizar colaborador. Por favor, tente novamente. $mensagemDeErro");
+      }
+
+      // Coloque os valores do post em $dados para que o formulário não fique vazio
+      $dados['cargo'] = $cargo;
+      $dados['dataContratacao'] = $dataContratacao;
+    }
+  } else {
+    $sql = "SELECT * FROM Colaborador WHERE idColaborador='$idEditar'";
+    $result = mysqli_query($con, $sql);
+    $dados = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  }
+
+  mysqli_close($con);
+
+  if (!$dados) {
+    exibirMensagem("Colaborador não encontrado.");
+    include __DIR__ . '/pages/404.php';
+    return;
+  }
+
+  include __DIR__ . '/pages/editarColaborador.php';
+}
+
+/*
+  Deletar colaborador
+*/
+function deletarColaborador()
+{
+  $idDeletar = isset($_GET['id']) ? $_GET['id'] : null;
+
+  $con = conectarDb();
+
+  $sql = "DELETE FROM Colaborador WHERE idColaborador='$idDeletar'";
+  $result = mysqli_query($con, $sql);
+
+  if ($result) {
+    exibirMensagem("Colaborador deletado com sucesso!");
+  } else {
+    $mensagemDeErro = mysqli_error($con);
+    exibirMensagem("Erro ao deletar colaborador. Por favor, tente novamente. $mensagemDeErro");
+  }
+
+  mysqli_close($con);
+
+  include __DIR__ . '/pages/colaborador.php';
+}
 
 /*
   Páginas de erro
